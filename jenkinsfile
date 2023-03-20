@@ -1,0 +1,43 @@
+pipeline{
+    agent any
+    environment{
+        USER_CUSTOM_VARIABLE="David"
+        ANOTHER_CUSTOM_VARIABLE="John"
+    }
+    stages{
+        stage("deployment"){
+            steps{
+                echo "Deploying to the central server ..."
+        }
+    }
+
+    stage("testing"){
+        when{
+            expression{
+                BRANCH_NAME == "testing" //run this stage only in testing branch
+            }
+        }
+        steps{
+            echo "Deploying Test on the central server ..."
+        }
+    }
+    stage("production"){
+        steps{
+            echo "Deploying to Production server ..."
+        }
+
+    }
+}
+post{
+    always{
+        echo "Job has finished running .."
+    }
+    success{
+        echo "Job was successful"
+    }
+    failure{
+        echo "JOb failed ..."
+    }
+}
+
+}
